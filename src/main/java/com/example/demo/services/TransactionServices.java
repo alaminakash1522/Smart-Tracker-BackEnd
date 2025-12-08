@@ -4,6 +4,7 @@ import com.example.demo.model.Transaction;
 import com.example.demo.repo.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +14,14 @@ public class TransactionServices {
     @Autowired
     TransactionRepository transactionRepository;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     public Transaction createTransaction(Transaction transaction) {
-        return transactionRepository.save(transaction);
+        Transaction saved = transactionRepository.save(transaction);
+        messagingTemplate.convertAndSend("/topic/expenses", saved);
+        return saved;
+        
     }
 
     public List<Transaction> getTransactionsByUser(Long userId) {
@@ -34,6 +41,7 @@ public class TransactionServices {
 
     public ResponseEntity<Void> deleteById(Long transactionId) {
         transactionRepository.deleteById(transactionId);
+        messagingTemplate.convertAndSend("/topic/expenses", "Deleted");
         return ResponseEntity.noContent().build();
     }
 
