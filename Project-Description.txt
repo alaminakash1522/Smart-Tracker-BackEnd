@@ -1,0 +1,15 @@
+Smart Expense Tracker – Backend Overview
+
+The Smart Expense Tracker backend is built using Spring Boot and provides secure, real-time expense monitoring and budget management. The system allows users to track expenses, manage budgets, and receive instant notifications when spending approaches or exceeds defined limits.
+
+The backend follows a layered architecture consisting of configuration, controller, service, repository, and model layers. This separation ensures maintainability, scalability, and clean business logic handling.
+
+Security is implemented using JWT (JSON Web Token) authentication. Users authenticate once and receive a token that is validated on every protected API request. JWT security is applied to both REST APIs and WebSocket connections, ensuring only authorized users can access data and receive notifications.
+
+Users can define budgets and optional threshold limits. Whenever a new transaction (expense) is added, the system recalculates total and category-based spending. If the spending crosses a warning threshold or exceeds the allocated budget, the system immediately triggers an alert.
+
+Real-time notifications are delivered using WebSocket technology. Instead of relying on repeated API calls, the backend pushes alerts instantly to connected clients when budget conditions change. This improves responsiveness and reduces unnecessary network overhead.
+
+Key features include secure authentication, RESTful APIs for users, budgets, categories, and transactions, intelligent budget validation, and real-time WebSocket notifications. The design supports future scalability and integration with modern front-end frameworks.
+
+Overall, the Smart Expense Tracker backend provides a reliable, secure, and real-time financial monitoring solution focused on user awareness and efficient expense control.
